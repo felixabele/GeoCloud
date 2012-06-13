@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+    <meta charset="UTF-8" />
+    <title>Germany Small</title>    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../js/geo_map.js"></script>    
+    <script type="text/javascript" src="../js/jquery.geoCloud.js"></script>        
+    <link href="../js/jquery.geoCloud.css" type="text/css" rel="stylesheet">
+    
+    <!-- TipTip: http://code.drewwilson.com/entry/tiptip-jquery-plugin -->
+    <link href="../tiptip/tipTip.css" type="text/css" rel="stylesheet">
+    <script src="../tiptip/jquery.tipTip.js" type="text/javascript"></script>
+
+<script type="text/javascript"> 
+  
+  // =======================================
+  //  DRAW-CUSTOM MAP
+  // =======================================
+  
+
+  // Referenz-Werte zum Bestimmen des Umrechnungskoefizienten
+  var references = [
+      {'title': 'Muenchen',     'pixel_point': [189,  48], 'coord': [11.57709, 48.13661]},
+      {'title': 'Berlin',       'pixel_point': [248, 266], 'coord': [13.4060912, 52.519171]},
+      {'title': 'Hannover:',    'pixel_point': [131, 259], 'coord': [9.73201040, 52.3758916]},
+      {'title': 'Goettingen:',  'pixel_point': [137, 215], 'coord': [9.92968989, 51.538352]}
+  ];
+  
+    
+  //console.log(calc_koef(references));  
+  
+  $(document).ready(function(){    
+      
+    $('#map_cloud').geocloud({
+        width: 304,
+        height: 400,
+        map_src: 'germany_s.png',
+        geo_settings: {
+            x_corr: 0.76,
+            y_corr: 1.22,
+            coef: 0.0240139240538077
+        },
+        ref_point: {
+            pixel_point: [137, 215], 
+            coord: [9.92968989, 51.538352]
+        }                    
+    }); 
+
+
+    $('#map_cloud').data('geocloud').drawPoints([
+      {title : 'Hamburg', size: 20,
+            coord: [9.99368179, 53.551084]},
+      {title : 'Bremen', size: 12,
+          coord: [8.8016936999, 53.079296]},
+      {title : 'Magdeburg', size: 12,
+          coord: [11.628877999, 52.130807]},
+      {title : 'Nuernberg', size: 29,
+          coord: [11.076749999, 49.45203]},
+      {title : 'Muenchen', size: 18,
+          coord: [11.57709, 48.13661]},
+      {title : 'Berlin', size: 23,
+          coord: [13.40609119, 52.519171]},
+      {title : 'Halle', size: 20,
+          coord: [11.967615, 51.48036481]},
+      {title : 'Frankfurt am Main', size: 19,
+          coord: [8.6821267, 50.1109221]},
+      {title : 'Freiburg', size: 24,
+          coord: [7.8421043, 47.9990077]},
+      {title : 'Essen', size: 25,
+          coord: [7.0115552, 51.4556432]},
+      {title : 'Passau', size: 21,
+          coord: [13.43195, 48.5667364]},    
+      {title: 'Goettingen', size: 12,
+          coord: [9.92968989, 51.538352]},
+      {title: 'Hannover', size: 12,
+          coord: [9.73201040, 52.3758916]},
+      {title: 'Kiel', size: 15,
+          coord: [10.122765, 54.323293]},
+      {title: 'Dresden', size: 18,
+          coord: [13.737262, 51.050409]}
+    ],
+    {
+        css: {},
+        attr: {
+            'class': 'city'
+        },
+        events: {
+            'mouseover': function(event) {},
+            'click': function(event) {
+                alert(event.data.city.title);
+            }           
+        }
+    }
+    );
+    
+    // Init Tooltip  
+    $(".city").tipTip();
+    
+  });  
+</script>
+
+</head>
+<body> 
+    <div id="map_cloud"></div>
+</body>
+</html>
