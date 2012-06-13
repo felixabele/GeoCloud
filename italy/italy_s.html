@@ -5,68 +5,60 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="../js/geo_map.js"></script>    
     <script type="text/javascript" src="../js/jquery.geoCloud.js"></script>        
-    <link href="../js/jquery.geoCloud.css" type="text/css" rel="stylesheet">
-    
-    <!-- TipTip: http://code.drewwilson.com/entry/tiptip-jquery-plugin -->
-    <link href="../tiptip/tipTip.css" type="text/css" rel="stylesheet">
-    <script src="../tiptip/jquery.tipTip.js" type="text/javascript"></script>
+    <link href="../css/jquery.geoCloud.css" type="text/css" rel="stylesheet">
 
-<script type="text/javascript"> 
-  
-  // =======================================
-  //  DRAW-CUSTOM MAP
-  // =======================================
-  
-  $(document).ready(function(){    
-      
-    $('#map_cloud').geocloud({
-        width: 306,
-        height: 400,
-        map_src: 'italy_s.png',
-        geo_settings: {
-            x_corr: 0.81,
-            y_corr: 1.10,
-            coef: 0.0316
-        },
-        ref_point: {
-            pixel_point: [149, 208], 
-            coord: [12.4942486, 41.8905198]
-        }                    
-    }); 
+    <script type="text/javascript"> 
+
+    // =======================================
+    //  DRAW-CUSTOM MAP
+    // =======================================
+
+    $(document).ready(function(){    
+
+        $('#map_cloud').geocloud({
+            width: 306,
+            height: 400,
+            map_src: 'italy_s.png',
+            geo_settings: {
+                x_corr: 0.81,
+                y_corr: 1.10,
+                coef: 0.0316
+            },
+            ref_point: {
+                pixel_point: [149, 208], 
+                coord: [12.4942486, 41.8905198]
+            }                    
+        }); 
 
 
-    $('#map_cloud').data('geocloud').drawPoints([
-      {title: 'Roma',      size: 24, coord: [12.4942486, 41.8905198]},
-      {title: 'Trento',    size: 18, coord: [11.1190591, 46.0667123]},
-      {title: 'Palermo',   size: 13, coord: [13.3614059, 38.11564]},
-      {title: 'Catanzaro', size: 10, coord: [16.5877572, 38.9105359]},
-      {title: 'Genova',    size: 18, coord: [8.93398890, 44.4070624]},
-      {title: 'Aosta',     size: 11, coord: [7.313234, 45.7350001]},
-      {title: 'Napoli',    size:  9, coord: [14.2525421, 40.8399833]},
-      {title: 'Bari',      size: 20, coord: [16.8721133, 41.1259135]},
-      {title: 'Venezia',   size: 17, coord: [12.3387844, 45.4343363]},
-      {title: 'Milano',    size:  8, coord: [9.1881714, 45.463681]},
-      {title: 'Cagliari',  size: 14, coord: [9.10932389, 39.2154086]}
-    ],
-    {
-        css: {},
-        attr: {
-            'class': 'city'
-        },
-        events: {
-            'mouseover': function(event) {},
-            'click': function(event) {
-                alert(event.data.city.title);
-            }           
+        $('#map_cloud').data('geocloud').drawPoints([
+        {title: 'Roma',      size: 24, coord: [12.4942486, 41.8905198]},
+        {title: 'Trento',    size: 18, coord: [11.1190591, 46.0667123]},
+        {title: 'Palermo',   size: 13, coord: [13.3614059, 38.11564]},
+        {title: 'Catanzaro', size: 10, coord: [16.5877572, 38.9105359]},
+        {title: 'Genova',    size: 18, coord: [8.93398890, 44.4070624]},
+        {title: 'Aosta',     size: 11, coord: [7.313234, 45.7350001]},
+        {title: 'Napoli',    size:  9, coord: [14.2525421, 40.8399833]},
+        {title: 'Bari',      size: 20, coord: [16.8721133, 41.1259135]},
+        {title: 'Venezia',   size: 17, coord: [12.3387844, 45.4343363]},
+        {title: 'Milano',    size:  8, coord: [9.1881714, 45.463681]},
+        {title: 'Cagliari',  size: 14, coord: [9.10932389, 39.2154086]}
+        ],
+        {
+            css: {},
+            attr: {
+                'class': 'city'
+            },
+            events: {
+                'mouseover': function(event) {},
+                'click': function(event) {
+                    alert(event.data.city.title);
+                }           
+            }
         }
-    }
-    );
-    
-    // Init Tooltip  
-    $(".city").tipTip();
-    
-  });  
-</script>
+        );
+    });  
+    </script>
 
 </head>
 <body> 
