@@ -42,7 +42,8 @@ Adding Points to your map
         css: {},      // add further Styles
         attr: {},     // add some attributes as title, class, etc..
     
-        // Define Events on your points (event.data.city contains all values from your point {title, size, coor, etc..} you can add as many as you want to)
+        // Define Events on your points (event.data.city contains all values from your 
+        // point {title, size, coor, etc..} you can add as many as you want to)
         events: {    
             'mouseover': function(event) {},
             'click': function(event) {
