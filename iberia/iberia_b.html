@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+    <meta charset="UTF-8" />
+    <title>Iberia Big</title>    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.geoCloud.js"></script>        
+    <link href="../css/jquery.geoCloud.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript"> 
+
+    // =======================================
+    //  DRAW-CUSTOM MAP
+    // =======================================
+
+    $(document).ready(function(){    
+
+        $('#map_cloud').geocloud({
+            width: 1072,
+            height: 800,
+            map_src: 'iberia_b.gif',
+            geo_settings: {
+                x_corr: 0.79, y_corr: 1.02, coef: 0.0135
+            },
+            ref_point: {
+                pixel_point: [465, 485], 
+                coord: [-3.7003454, 40.4166909] 
+            }                    
+        }); 
+
+        $('#map_cloud').data('geocloud').drawPoints([
+            {title: 'Madrid',           size: 31, coord: [-3.7003454, 40.4166909]},
+            {title: 'Malaga',           size: 18, coord: [-4.4200163, 36.7196484]},
+            {title: 'Barcelona',        size: 11, coord: [2.1699187, 41.387917]},
+            {title: 'La Coruna',        size: 24, coord: [-8.395835, 43.3708731]},
+            {title: 'San Sebastian',    size: 14, coord: [-1.9844474, 43.3208116]},
+            {title: 'Sevilla',          size: 18, coord: [-5.9962951, 37.38264]},
+            {title: 'Valencia',         size: 24, coord: [-0.3768049, 39.4702393]},
+            {title: 'Palma',            size:  9, coord: [2.649966, 39.5695059]},
+            {title: 'Zaragossa',        size: 14, coord: [-0.8765379,41.6562873]}
+        ],
+        {
+            css: {},
+            attr: {
+                'class': 'city'
+            },
+            events: {
+                'mouseover': function(event) {},
+                'click': function(event) {
+                    alert(event.data.city.title);
+                }           
+            }
+        }
+        );
+    });  
+    </script>
+
+</head>
+<body> 
+    <div id="map_cloud"></div>
+</body>
+</html>
