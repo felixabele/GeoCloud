@@ -61,4 +61,10 @@ Soon there will be more
 
 Examples
 ========
-... soon to come
+Checkout: 
+ - /germany/...
+ - /iberia/...
+ - /italy/...
+
+And for a usecase: 
+http://www.felix-abele.de/map/example
