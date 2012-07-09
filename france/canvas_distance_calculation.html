@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+    <meta charset="UTF-8" />
+    <title>France: calculate distances on a Canvas</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.geoCloud.js"></script>        
+    <link href="../css/jquery.geoCloud.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript"> 
+
+    // =======================================
+    //  DRAW-CUSTOM MAP
+    // =======================================  
+
+    $(document).ready(function(){    
+
+        $('#map_cloud').geocloud({
+            width: 393,
+            height: 400,
+            map_src: 'france_s.gif',
+            use_canvas: true,
+            canvas_style_opt: {
+                fillStyle: "grey"},
+            geo_settings: {
+                x_corr: 0.86, y_corr: 1.23, coef: 0.0316
+            },
+            ref_point: {
+                pixel_point: [242, 189], 
+                coord: [4.072695, 46.034432]
+            }
+        }); 
+
+
+        var cities = [
+            {title: 'Bordeaux', size: 22, coord: [-0.57918, 44.837789]},
+            {title: 'Roanne',   size: 10, coord: [4.072695, 46.034432]},
+            {title: 'Limoges',  size: 16, coord: [1.261105, 45.833619]},
+            {title: 'Nantes',   size: 20, coord: [-1.553621, 47.218371]},
+            {title: 'Paris',    size: 30, coord: [2.3522219, 48.856614]},
+            {title: 'Le Havre', size: 10, coord: [0.107929, 49.49437]},
+            {title: 'Monaco',   size: 18, coord: [7.42461579, 43.7384176]},
+            {title: 'Lyon',     size: 21, coord: [4.835659, 45.764043]},
+            {title: 'Toulouse', size: 13, coord: [1.444209, 43.604652]},
+            {title: 'Perpignan',size:  8, coord: [2.8958719, 42.698684]}    
+        ];
+            
+        $('#map_cloud').data('geocloud').drawPoints(cities);
+        
+        $('#map_cloud').data('geocloud').drawLineByNames('Roanne', 'Toulouse');
+        $('#map_cloud').data('geocloud').drawLineByNames('Toulouse', 'Paris');
+        $('#map_cloud').data('geocloud').drawLineByNames('Paris', 'Nantes');
+        $('#map_cloud').data('geocloud').drawLineByNames('Nantes', 'Bordeaux');
+        
+        var dist = $('#map_cloud').data('geocloud').drawLine(cities[9], cities[6]);
+        $('#output').html("Distance between "+ cities[9].title +" and "+ cities[6].title +" is "+ parseInt(dist) +" Km");
+    });  
+    </script>
+
+</head>
+<body> 
+    <div id="map_cloud"></div>
+    <div id="output"></div>
+</body>
+</html>

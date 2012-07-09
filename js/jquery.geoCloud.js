@@ -1,6 +1,6 @@
 // jQuery Geo-Cloud-Plugin
 // Country Map with custum Elements
-// version 0.4, 08.06.2012
+// version 0.5, 08.06.2012
 // by Felix Abele
 
 (function($) {
@@ -9,7 +9,8 @@
     $.geocloud = function(element, options) {
 
         var $element = $(element),
-             element = element;
+             element = element,
+             canvas_ctx = null;
 
         // --- Default-Options
         var defaults = {            
@@ -23,7 +24,10 @@
               pixel_point: [200, 200],  // Reference Point (Pixel)
               coord: [0.00, 0.00]       // ... Geo-Coordinates
             },
-            map_src: 'maps/default.jpg' // Map-Source
+            map_src: 'maps/default.jpg',// Map-Source
+            use_canvas: false,          // false, true
+            canvas_style_opt: {
+                fillStyle: "#8ED6FF", lineWidth: 1, strokeStyle: "grey"}
         }
 
         // use "plugin" to reference the current instance of the object
@@ -41,6 +45,16 @@
             // Extend Default-Settings with Customs
             plugin.settings = $.extend({}, defaults, options);
             plugin.element = $element;
+            
+            // Canvas Options
+            if ((plugin.settings.use_canvas)) {
+                var canvas = $( "<canvas></canvas>" );                
+                canvas.attr('width', plugin.settings.width);
+                canvas.attr('height', plugin.settings.height);
+                plugin.settings.use_canvas = true;
+                plugin.canvas_ctx = canvas[0].getContext('2d');
+                plugin.element.append(canvas);
+            }            
             
             // Draw the Map
             $element.css({
@@ -77,7 +91,7 @@
                     'left': x, 'bottom': y, 'height': city.size, 'width': city.size, 
                     'border-radius':rad+2, 'position': 'absolute'}, 
                     opt.css),
-                attrs = $.extend({}, {'title': city.title}, city.attr, opt.attr);
+                attrs = $.extend({}, {'title': city.title}, city.attr, opt.attr);            
             
             dot.css(styles);
             dot.attr(attrs);
@@ -87,6 +101,18 @@
                 dot.bind(type, {city: city}, fn);
             });
             plugin.element.append(dot);
+            
+            // Draw Point on Canvas: Makes no sense for Now, but maybe for the future
+            /*if (plugin.settings.use_canvas) {
+                plugin.canvas_ctx.beginPath();
+                plugin.canvas_ctx.arc(point[0], plugin.settings.height-point[1], rad, 0 , 2 * Math.PI, false);
+                plugin.canvas_ctx.fillStyle = plugin.settings.canvas_style_opt.fillStyle;
+                plugin.canvas_ctx.fill();   
+                plugin.canvas_ctx.lineWidth = plugin.settings.canvas_style_opt.lineWidth;
+                plugin.canvas_ctx.strokeStyle = plugin.settings.canvas_style_opt.strokeStyle;
+                plugin.canvas_ctx.stroke();                
+            }*/           
+            
             return dot;
         }
         
@@ -95,6 +121,42 @@
             for(var i=0; i<cities.length; i++) {
                 plugin.drawPoint(cities[i], opt);
             }
+        }
+        
+        // --- Draw A Line By Name (Only if Canvas is enabled)
+        //     @params: 
+        //          from = 'Berlin'
+        //          to   = 'Hamburg'
+        plugin.drawLineByNames = function( from, to ) {
+            var el1 = plugin.element.find('[title="'+ from +'"]'),
+                el2 = plugin.element.find('[title="'+ to +'"]');
+            drawCanvasLine( 
+                {pos: el1.position(), rad: parseInt(el1.width()/2)},
+                {pos: el2.position(), rad: parseInt(el2.width()/2)}
+           );
+        }
+
+        // --- Draw A Line By points (Only if Canvas is enabled)
+        //     Returns: Distance in Km
+        //     @params: 
+        //          p1 = {title: 'Toulouse', size: 13, coord: [1.444209, 43.604652]},            
+        //          p2 = {title: 'Perpignan',size: 8, coord: [2.8958719, 42.698684]}
+        plugin.drawLine = function( p1, p2 ) {
+            plugin.drawLineByNames( p1.title, p2.title );
+            return plugin.getDistance( p1, p2 );
+        }
+        
+        // --- Get Distance in Km
+        //     @params: 
+        //          p1 = {title: 'Toulouse', size: 13, coord: [1.444209, 43.604652]},            
+        //          p2 = {title: 'Perpignan',size: 8, coord: [2.8958719, 42.698684]}
+        plugin.getDistance = function( p1, p2 ) {
+            var lat1  = (p1.coord[1] / 180 * Math.PI),
+                len1  = (p1.coord[0] / 180 * Math.PI),
+                lat2  = (p2.coord[1] / 180 * Math.PI),
+                len2  = (p2.coord[0] / 180 * Math.PI);
+            var e = Math.acos( Math.sin(lat1)*Math.sin(lat2) + Math.cos(lat1)*Math.cos(lat2)*Math.cos(len2-len1) );
+            return (e * 6378.137);
         }
 
         // ----------------------------------------
@@ -113,12 +175,25 @@
 
             // Korrektur-Wert fuer Edkruemmung (gilt nur fuer Deutschland)
             px_x_diff *= plugin.settings.geo_settings.x_corr;
-            px_y_diff *= plugin.settings.geo_settings.y_corr;        
+            px_y_diff *= plugin.settings.geo_settings.y_corr;
 
             var px_x = ref_p.pixel_point[0] + px_x_diff;
             var px_y = ref_p.pixel_point[1] + px_y_diff;      
 
             return [px_x, px_y];
+        }
+        
+        // --- Draw A Line between two points on Canvas-Element
+        var drawCanvasLine = function( p1, p2 ) {
+            if (plugin.settings.use_canvas) {
+                plugin.canvas_ctx.beginPath();
+                plugin.canvas_ctx.moveTo((p1.pos.left+p1.rad), (p1.pos.top+p1.rad));
+                plugin.canvas_ctx.lineTo((p2.pos.left+p2.rad), (p2.pos.top+p2.rad));
+                plugin.canvas_ctx.strokeStyle = plugin.settings.canvas_style_opt.fillStyle;
+                plugin.canvas_ctx.lineWidth = plugin.settings.canvas_style_opt.lineWidth;
+                
+                plugin.canvas_ctx.stroke();                
+            }            
         }
 
         // fire up the plugin!

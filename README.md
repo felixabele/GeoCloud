@@ -59,6 +59,51 @@ Germany, Spain and Portugal, Italy.
 Soon there will be more
 
 
+Canvas Support and distance between Point / Cities
+========
+From now on you have two more options for enabling HTML5 Canvas support for additional features:
+    
+    use_canvas: true,       // best if you use Modernizr.canvas here, checkout: http://modernizr.com/
+    canvas_style_opt: {     // Styles for Canvas-Line
+        fillStyle: "grey",  // color-Code
+        lineWidth: 2}       // Line-width in Pixels
+
+Example:
+-------
+
+Define some Cities
+
+    var cities = [
+        {title: 'Bordeaux', size: 22, coord: [-0.57918, 44.837789]},
+        {title: 'Roanne',   size: 10, coord: [4.072695, 46.034432]},
+        {title: 'Limoges',  size: 16, coord: [1.261105, 45.833619]},
+        {title: 'Nantes',   size: 20, coord: [-1.553621, 47.218371]},
+        {title: 'Paris',    size: 30, coord: [2.3522219, 48.856614]},
+        {title: 'Le Havre', size: 10, coord: [0.107929, 49.49437]},
+        {title: 'Monaco',   size: 18, coord: [7.42461579, 43.7384176]},
+        {title: 'Lyon',     size: 21, coord: [4.835659, 45.764043]},
+        {title: 'Toulouse', size: 13, coord: [1.444209, 43.604652]},
+        {title: 'Perpignan',size:  8, coord: [2.8958719, 42.698684]}    
+    ];
+
+Draw them on your map
+
+    $('#map_cloud').data('geocloud').drawPoints(cities);
+
+1. Draw a Line between cities by passing the names
+
+    $('#map_cloud').data('geocloud').drawLineByNames('Roanne', 'Toulouse');
+    $('#map_cloud').data('geocloud').drawLineByNames('Toulouse', 'Paris');
+    $('#map_cloud').data('geocloud').drawLineByNames('Paris', 'Nantes');
+    $('#map_cloud').data('geocloud').drawLineByNames('Nantes', 'Bordeaux');
+
+2. Draw the Lines by passing the points with Geo-coordinates. This will return the distance in Km.
+
+    var dist = $('#map_cloud').data('geocloud').drawLine(cities[9], cities[6]);
+    alert("Distance between "+ cities[9].title +" and "+ cities[6].title +" is "+ parseInt(dist) +" Km"); // Distance between Perpignan and Monaco is 385 Km
+
+You will find this in /france/canvas_distance_calculation.html
+
 Examples
 ========
 Checkout: 
