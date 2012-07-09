@@ -59,7 +59,7 @@ Germany, Spain and Portugal, Italy.
 Soon there will be more
 
 
-Canvas Support and distance between Point / Cities
+Canvas Support and distance between Points / Cities
 ========
 From now on you have two more options for enabling HTML5 Canvas support for additional features:
     
@@ -90,19 +90,19 @@ Draw them on your map
 
     $('#map_cloud').data('geocloud').drawPoints(cities);
 
-1. Draw a Line between cities by passing the names
+Draw a Line between cities by passing the names ..
 
     $('#map_cloud').data('geocloud').drawLineByNames('Roanne', 'Toulouse');
     $('#map_cloud').data('geocloud').drawLineByNames('Toulouse', 'Paris');
     $('#map_cloud').data('geocloud').drawLineByNames('Paris', 'Nantes');
     $('#map_cloud').data('geocloud').drawLineByNames('Nantes', 'Bordeaux');
 
-2. Draw the Lines by passing the points with Geo-coordinates. This will return the distance in Km.
+.. or Draw the Lines by passing the points with Geo-coordinates. This will return the distance in Km.
 
     var dist = $('#map_cloud').data('geocloud').drawLine(cities[9], cities[6]);
     alert("Distance between "+ cities[9].title +" and "+ cities[6].title +" is "+ parseInt(dist) +" Km"); // Distance between Perpignan and Monaco is 385 Km
 
-You will find this in /france/canvas_distance_calculation.html
+Checkout /france/canvas_distance_calculation.html for the code
 
 Examples
 ========
