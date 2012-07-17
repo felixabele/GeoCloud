@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+    <meta charset="UTF-8" />
+    <title>Great Britain Small</title>    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.geoCloud.js"></script>        
+    <link href="../css/jquery.geoCloud.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript"> 
+
+    // =======================================
+    //  DRAW-CUSTOM MAP
+    // =======================================  
+
+    $(document).ready(function(){    
+
+        $('#map_cloud').geocloud({
+            width: 334,
+            height: 400,
+            map_src: 'great_britain_s.gif',
+            geo_settings: {
+                x_corr: 0.72, y_corr: 1.24, coef: 0.03176
+            },
+            ref_point: {
+                pixel_point: [164, 235], coord: [-4.251806, 55.864237]
+            }
+        }); 
+
+
+        $('#map_cloud').data('geocloud').drawPoints([
+            {title: 'Aberdeen',   size: 15, coord: [-2.094278, 57.149717]},
+            {title: 'Glasgow',    size: 12, coord: [-4.251806, 55.864237]},
+            {title: 'Dublin',     size: 18, coord: [-6.2674937, 53.344104]},
+            {title: 'Plymouth',   size: 12, coord: [-4.1360198, 50.3719165]},
+            {title: 'London',     size: 20, coord: [-0.1276831, 51.5073346]},
+            {title: 'Leeds',      size: 11, coord: [-1.548567, 53.801279]},
+            {title: 'Inverness',  size: 10, coord: [-4.224721, 57.477773]}
+        ],
+        {
+            css: {},
+            attr: {
+                'class': 'city'
+            },
+            events: {
+                'mouseover': function(event) {},
+                'click': function(event) {
+                    alert(event.data.city.title);
+                }           
+            }
+        }
+        );    
+    });  
+    </script>
+
+</head>
+<body> 
+    <div id="map_cloud"></div>
+</body>
+</html>
