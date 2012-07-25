@@ -122,7 +122,7 @@
                 plugin.drawPoint(cities[i], opt);
             }
         }
-        
+
         // --- Draw A Line By Name (Only if Canvas is enabled)
         //     @params: 
         //          from = 'Berlin'
@@ -156,7 +156,7 @@
                 lat2  = (p2.coord[1] / 180 * Math.PI),
                 len2  = (p2.coord[0] / 180 * Math.PI);
             var e = Math.acos( Math.sin(lat1)*Math.sin(lat2) + Math.cos(lat1)*Math.cos(lat2)*Math.cos(len2-len1) );
-            return (e * 6378.137);
+            return parseInt(e * 6378.137);
         }
         
         // --- Get Geopoint from Pixel
@@ -179,7 +179,7 @@
 
         // --- Get Geopoint from Pixel
         //    @param: point = [1.444209, 43.604652]
-        plugin.CoordsToPixels = function( geo_point ) {
+        plugin.coordsToPixels = function( geo_point ) {
             return get_by_reference( geo_point );
         }
 
@@ -204,7 +204,7 @@
             var px_x = ref_p.pixel_point[0] + px_x_diff,
                 px_y = ref_p.pixel_point[1] + px_y_diff;      
 
-            return [px_x, px_y];
+            return [parseInt(px_x), parseInt(px_y)];
         }
         
         // --- Draw A Line between two points on Canvas-Element
