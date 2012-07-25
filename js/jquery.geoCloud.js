@@ -1,6 +1,6 @@
 // jQuery Geo-Cloud-Plugin
 // Country Map with custum Elements
-// version 0.5, 08.06.2012
+// version 0.6, 25.07.2012
 // by Felix Abele
 
 (function($) {
@@ -44,7 +44,7 @@
         plugin.init = function() {
             // Extend Default-Settings with Customs
             plugin.settings = $.extend({}, defaults, options);
-            plugin.element = $element;
+            plugin.element = $element;            
             
             // Canvas Options
             if ((plugin.settings.use_canvas)) {
@@ -77,9 +77,9 @@
         plugin.drawPoint = function( city, opt ) {                        
             
             // Set opt to default if unset
-            if (!opt) {
-                var opt = {css: {}, events: {}, attr: {}};
-            }
+            if (!opt) { var opt = {} }
+            var bs_opt = {css: {}, events: {}, attr: {}};            
+            opt = $.extend({}, bs_opt, opt)
             
             // get Pixel-Point from Geo-Point
             var point = get_by_reference( city.coord ),
@@ -118,7 +118,7 @@
         
         // --- Draw an Array of points
         plugin.drawPoints = function( cities, opt ) {
-            for(var i=0; i<cities.length; i++) {
+            for(var i=0; i<cities.length; i++) {                
                 plugin.drawPoint(cities[i], opt);
             }
         }
@@ -158,27 +158,51 @@
             var e = Math.acos( Math.sin(lat1)*Math.sin(lat2) + Math.cos(lat1)*Math.cos(lat2)*Math.cos(len2-len1) );
             return (e * 6378.137);
         }
+        
+        // --- Get Geopoint from Pixel
+        //    @param: point = [120, 300]
+        plugin.pixelsToCoords = function( pixel_point ) {
+          
+            var coef = plugin.settings.geo_settings.coef,
+                ref_p = plugin.settings.ref_point;          
+          
+            // Calculate distance to reference point in Pixel
+            var px_x_diff = (ref_p.pixel_point[0]-pixel_point[0])*coef,
+                px_y_diff = (ref_p.pixel_point[1]-pixel_point[1])*coef;  
+            
+            // transform it to grad
+            var px_x = ref_p.coord[0] - (px_x_diff / plugin.settings.geo_settings.x_corr),
+                px_y = ref_p.coord[1] - (px_y_diff / plugin.settings.geo_settings.y_corr);
+            
+            return [px_x, px_y]
+        }
+
+        // --- Get Geopoint from Pixel
+        //    @param: point = [1.444209, 43.604652]
+        plugin.CoordsToPixels = function( geo_point ) {
+            return get_by_reference( geo_point );
+        }
 
         // ----------------------------------------
         //      Private Methods
         // ----------------------------------------
         // --- Calculate Point in pixel by Reference Geo-Value
         var get_by_reference = function(coords) {
-            var coef = plugin.settings.geo_settings.coef;
-            var ref_p = plugin.settings.ref_point;
+            var coef = plugin.settings.geo_settings.coef,
+                ref_p = plugin.settings.ref_point;
             
-            var gr_lng_diff = coords[0]-ref_p.coord[0];
-            var gr_lat_diff = coords[1]-ref_p.coord[1];
+            var gr_lng_diff = coords[0]-ref_p.coord[0],
+                gr_lat_diff = coords[1]-ref_p.coord[1];
 
-            var px_x_diff = gr_lng_diff/coef;  
-            var px_y_diff = gr_lat_diff/coef;  
+            var px_x_diff = gr_lng_diff/coef,
+                px_y_diff = gr_lat_diff/coef;  
 
-            // Korrektur-Wert fuer Edkruemmung (gilt nur fuer Deutschland)
+            // correcten for the Earth is an elypsis
             px_x_diff *= plugin.settings.geo_settings.x_corr;
             px_y_diff *= plugin.settings.geo_settings.y_corr;
 
-            var px_x = ref_p.pixel_point[0] + px_x_diff;
-            var px_y = ref_p.pixel_point[1] + px_y_diff;      
+            var px_x = ref_p.pixel_point[0] + px_x_diff,
+                px_y = ref_p.pixel_point[1] + px_y_diff;      
 
             return [px_x, px_y];
         }
@@ -199,7 +223,6 @@
         // fire up the plugin!
         // call the "constructor" method
         plugin.init();
-
     }
 
     // add the plugin to the jQuery.fn object
