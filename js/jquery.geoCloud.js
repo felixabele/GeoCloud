@@ -171,10 +171,10 @@
                 px_y_diff = (ref_p.pixel_point[1]-pixel_point[1])*coef;  
             
             // transform it to grad
-            var px_x = ref_p.coord[0] - (px_x_diff / plugin.settings.geo_settings.x_corr),
-                px_y = ref_p.coord[1] - (px_y_diff / plugin.settings.geo_settings.y_corr);
+            var geo_x = ref_p.coord[0] - (px_x_diff / plugin.settings.geo_settings.x_corr),
+                geo_y = ref_p.coord[1] - (px_y_diff / plugin.settings.geo_settings.y_corr);
             
-            return [px_x, px_y]
+            return [geo_x, geo_y]
         }
 
         // --- Get Geopoint from Pixel
