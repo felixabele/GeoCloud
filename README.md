@@ -114,4 +114,4 @@ Checkout:
  - /great_britain/ ...
 
 And for a usecase: 
-http://www.felix-abele.de/map/example
+http://code.felix-abele.de/map/example
